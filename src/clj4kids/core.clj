@@ -1,18 +1,18 @@
 (ns clj4kids.core
   (:require [clj4kids.graphics :as gfx]))
 
-(def side-length 40)
-(def pixel-size 16)
+(def ^:private side-length 40)
+(def ^:private pixel-size 16)
 
-(def clear-colour :black)
-(def default-colour :white)
+(def ^:private clear-color :black)
+(def ^:private default-color :white)
 
-(def ^:private clear-screen (vec (repeat side-length (vec (repeat side-length clear-colour)))))
+(def ^:private clear-screen (vec (repeat side-length (vec (repeat side-length clear-color)))))
 
 (defonce ^:private raster (atom clear-screen))
-(defonce ^:private current-colour (atom :white))
+(defonce ^:private current-color (atom :white))
 
-(def colours
+(def colors
   {:black       [0 0 0]
    :red         [157 9 102]
    :dark-blue   [42 42 229]
@@ -30,14 +30,14 @@
    :aqua        [98 246 153]
    :white       [255 255 255]})
 
-(defn make-panel []
-  (gfx/make-panel colours raster side-length pixel-size))
+(defn- make-panel []
+  (gfx/make-panel colors raster side-length pixel-size))
 
 (defonce ^:private canvas
   (delay (make-panel)))
 
-(defn colour [c]
-  (reset! current-colour c))
+(defn color [c]
+  (reset! current-color c))
 
 (defn clear []
   (force canvas)
@@ -46,7 +46,7 @@
 
 (defn point [x y]
   (force canvas)
-  (swap! raster assoc-in [x y] @current-colour)
+  (swap! raster assoc-in [x y] @current-color)
   nil)
 
 (defn h-line [y x1 x2]
